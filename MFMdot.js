@@ -3,7 +3,6 @@
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
-<<<<<<< HEAD
 // Define a "box" object
 function box(x,y,width,height){
     this.x = x;
@@ -78,76 +77,6 @@ briefcase = {
 keys = [],
 friction = 0.8,
 gravity = 0.2;
-=======
-var width = 500;
-var height = 300;
-var canvas = document.getElementById("canvas");
-
-canvas.width = width*2;
-canvas.height = height*2;
-
-canvas.style.width = "500px";
-canvas.style.height = "300px";
-
-//canvas.style.width = width;
-//canvas.style.height = height;
-
-var ctx = canvas.getContext("2d");
-
-ctx.scale(2,2);
-
-  var player = {
-    x: width / 2,
-    y: 0,
-    width: 5,
-    height: 5,
-    speed: 3,
-    velX: 0,
-    velY: 0,
-    jumping: false,
-    grounded: false
-  },
-  guy = {
-    x: -75,
-    y: 120,
-    width: 5,
-    height: 5,
-    direction: "l",
-    count: 0
-  },
-  //wall in front of client
-  wall = {
-    x: -60,
-    y: -100,
-    width: 10,
-    height: 225,
-    color: "transparent"
-  },
-  ground = {
-    x: 0,
-    y: 500,
-    width: width,
-    height: 30
-  },
-  elevator = {
-    x: 100,
-    y: 495,
-    width: 40,
-    height: 40,
-    at_top: 0
-  },
-  briefcase = {
-    x: 2900,
-    y: 370,
-    width: 20,
-    height: 12,
-    count: 0
-  },
-
-  keys = [],
-  friction = 0.8,
-  gravity = 0.2;
->>>>>>> 5a38177f0d13c6f4e3a425c680c4416264a69a78
 
 //court house door
 door = {
@@ -822,17 +751,6 @@ function colCheck(shapeA, shapeB) {
     }
   }
   return colDir;
-}
-
-var dialog = [];
-var dialogCount = 0;
-dialog.push("talk 1");
-dialog.push("talk 2");
-dialog.push("talk 3");
-
-function dialogNext(){
-  dialogCount++;
-  document.getElementById("dialogBox").innerHTML = dialog[dialogCount];
 }
 
 document.body.addEventListener("keydown", function(e) {
