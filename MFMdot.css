@@ -1,3 +1,25 @@
-canvas {
+body{
+  font-family: monospace;
+  font-size: 18px;
+}
+button{
+  font-family: monospace;
+  font-size: 18px;
+}
+canvas{
   border: 1px solid #000;
+  width:500px;
+  height:300px;
+  position: absolute;
+  top:0;
+  left:0;
+}
+#dialogBoxWrapper{
+  height:280px;
+  width:250px;
+  position: absolute;
+  top:0;
+  left:501px;
+  border:1px solid black;
+  padding:10px;
 }
