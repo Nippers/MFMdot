@@ -22,60 +22,61 @@ function coins_obj(x,y,width,height,color,count){
 }
 
 var canvas = document.getElementById("canvas"),
-  ctx = canvas.getContext("2d"),
-  width = 500,
-  height = 300,
-  player = {
-    x: width / 2,
-    y: 0,
-    width: 5,
-    height: 5,
-    speed: 3,
-    velX: 0,
-    velY: 0,
-    jumping: false,
-    grounded: false
-  },
-  guy = {
-    x: -75,
-    y: 120,
-    width: 5,
-    height: 5,
-    direction: "l",
-    count: 0
-  },
-  //wall in front of client
-  wall = {
-    x: -60,
-    y: -100,
-    width: 10,
-    height: 225,
-    color: "transparent"
-  },
-  ground = {
-    x: 0,
-    y: 500,
-    width: width,
-    height: 30
-  },
-  elevator = {
-    x: 100,
-    y: 495,
-    width: 40,
-    height: 40,
-    at_top: 0
-  },
-  briefcase = {
-    x: 2900,
-    y: 370,
-    width: 20,
-    height: 12,
-    count: 0
-  },
+ctx = canvas.getContext("2d"),
 
-  keys = [],
-  friction = 0.8,
-  gravity = 0.2;
+width = 500,
+height = 300,
+player = {
+  x: width / 2,
+  y: 0,
+  width: 5,
+  height: 5,
+  speed: 3,
+  velX: 0,
+  velY: 0,
+  jumping: false,
+  grounded: false
+},
+guy = {
+  x: -75,
+  y: 120,
+  width: 5,
+  height: 5,
+  direction: "l",
+  count: 0
+},
+//wall in front of client
+wall = {
+  x: -60,
+  y: -100,
+  width: 10,
+  height: 225,
+  color: "transparent"
+},
+ground = {
+  x: 0,
+  y: 500,
+  width: width,
+  height: 30
+},
+elevator = {
+  x: 100,
+  y: 495,
+  width: 40,
+  height: 40,
+  at_top: 0
+},
+briefcase = {
+  x: 2900,
+  y: 370,
+  width: 20,
+  height: 12,
+  count: 0
+},
+
+keys = [],
+friction = 0.8,
+gravity = 0.2;
 
 //court house door
 door = {
@@ -148,7 +149,6 @@ coins.push( new coins_obj(2805,70,10,10,"yellow",0) ); //coin9
 //intitalize some variables
 var originx = 0;
 var originy = 0;
-var right_button_count = 0;
 var right_button_count = 0;
 var origin = 0;
 var gap_length = 180;
@@ -464,7 +464,6 @@ function update() {
     ctx.fillStyle = "rgba(255,255,255,.3)"
     ctx.fillRect(clouds[i].x, clouds[i].y, clouds[i].width, clouds[i].height);
     ctx.fillRect(clouds[i].x - clouds[i].width / 2, clouds[i].y + clouds[i].height / 2, clouds[i].width * 2, clouds[i].height);
-
   }
 
   for (var i = 0; i < coins.length; i++) {
@@ -507,14 +506,13 @@ function update() {
   ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
 
   //fill in briefcase
+  ctx.fillStyle = "black";
   if (briefcase.count < 1) {
-    ctx.fillStyle = "black";
     ctx.fillRect(briefcase.x, briefcase.y, briefcase.width, briefcase.height);
     ctx.fillRect(briefcase.x + 5, briefcase.y - 6, 10, 3);
     ctx.fillRect(briefcase.x + 5, briefcase.y - 6, 2, 10);
     ctx.fillRect(briefcase.x + 13, briefcase.y - 6, 2, 10);
   } else {
-    ctx.fillStyle = "black";
     ctx.fillRect(30, 30, briefcase.width, briefcase.height);
     ctx.fillRect(30 + 5, 30 - 6, 10, 3);
     ctx.fillRect(30 + 5, 30 - 6, 2, 10);
