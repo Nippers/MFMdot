@@ -1,3 +1,15 @@
-canvas {
+canvas{
   border: 1px solid #000;
+  width:500px;
+  height:300px;
+  position: absolute;
+  top:0;
+  left:0;
+}
+#dialogBox{
+  position: absolute;
+  top:0;
+  left:501px;
+  border:1px solid black;
+  padding:15px;
 }
