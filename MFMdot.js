@@ -3,12 +3,22 @@
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
-// Define a "unit_descriptor" object
-function unit_descriptor(sections, tracts, DOI, unit_number){
-    this.sections = sections;
-    this.tracts = tracts;
-    this.DOI = DOI;
-    this.num = unit_number;
+// Define a "box" object
+function box(x,y,width,height){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+}
+
+// Define a "coins_obj" object
+function coins_obj(x,y,width,height,color,count){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.count = count;
 }
 
 
@@ -88,160 +98,31 @@ for (i = 0; i < 12; i++) {
 }
 
 var boxes = [];
-// courthouse platform
-boxes.push({
-  x: 6500,
-  y: 200,
-  width: 30,
-  height: 30
-});
-//courthouse base
-boxes.push({
-  x: 6600,
-  y: 270,
-  width: 500,
-  height: 20
-});
-//tree platforms
-boxes.push({
-  x: -40,
-  y: 250,
-  width: 130,
-  height: 15
-});
-boxes.push({
-  x: 150,
-  y: 180,
-  width: 30,
-  height: 30
-});
-//trunk
-boxes.push({
-  x: -30,
-  y: 130,
-  width: 7,
-  height: 120
-});
-//top branch
-boxes.push({
-  x: -85,
-  y: 125,
-  width: 70,
-  height: 7
-});
-//bottom branch
-boxes.push({
-  x: -24,
-  y: 170,
-  width: 20,
-  height: 7
-});
-//player platform
-boxes.push({
-  x: 215,
-  y: 150,
-  width: 60,
-  height: 60
-});
-
+boxes.push( new box(6500,200,30,30)  ); // courthouse platform
+boxes.push( new box(6600,270,500,20) ); //courthouse base
+boxes.push( new box(-40,250,130,15)  ); //tree platforms
+boxes.push( new box(150,180,30,30)   );
+boxes.push( new box(-30,130,7,120)   ); //trunk
+boxes.push( new box(-85,125,70,7)    ); //top branch
+boxes.push( new box(-24,170,20,7)    ); //bottom branch
+boxes.push( new box(215,150,60,60)   ); //player platform
 
 var courthouse = [];
-//roof
-courthouse.push({
-  x: 6700,
-  y: 68,
-  width: 320,
-  height: 20
-});
-courthouse.push({
-  x: 6740,
-  y: 46,
-  width: 240,
-  height: 20
-});
-courthouse.push({
-  x: 6780,
-  y: 24,
-  width: 160,
-  height: 20
-});
-//pillars
-//left pillar
-courthouse.push({
-  x: 6700,
-  y: 100,
-  width: 20,
-  height: 170
-});
-courthouse.push({
-  x: 6690,
-  y: 90,
-  width: 40,
-  height: 10
-});
-courthouse.push({
-  x: 6690,
-  y: 260,
-  width: 40,
-  height: 10
-});
-//2nd from left pillar
-courthouse.push({
-  x: 6800,
-  y: 100,
-  width: 20,
-  height: 170
-});
-courthouse.push({
-  x: 6790,
-  y: 90,
-  width: 40,
-  height: 10
-});
-courthouse.push({
-  x: 6790,
-  y: 260,
-  width: 40,
-  height: 10
-});
-//2nd from right pillar
-courthouse.push({
-  x: 6900,
-  y: 100,
-  width: 20,
-  height: 170
-});
-courthouse.push({
-  x: 6890,
-  y: 90,
-  width: 40,
-  height: 10
-});
-courthouse.push({
-  x: 6890,
-  y: 260,
-  width: 40,
-  height: 10
-});
-//right pillar
-courthouse.push({
-  x: 7000,
-  y: 100,
-  width: 20,
-  height: 170
-});
-courthouse.push({
-  x: 6990,
-  y: 90,
-  width: 40,
-  height: 10
-});
-courthouse.push({
-  x: 6990,
-  y: 260,
-  width: 40,
-  height: 10
-});
+courthouse.push( new box(6700,68,320,20)  ); //roof
+courthouse.push( new box(6740,46,240,20)  );
+courthouse.push( new box(6780,24,160,20)  );
+courthouse.push( new box(6700,100,20,170) ); //pillars...left pillar
+courthouse.push( new box(6690,90,40,10)   );
+courthouse.push( new box(6690,260,40,10)  );
+courthouse.push( new box(6800,100,20,170) ); //2nd from left pillar
+courthouse.push( new box(6790,90,40,10)   );
+courthouse.push( new box(6790,260,40,10)  );
+courthouse.push( new box(6900,100,20,170) ); //2nd from right pillar
+courthouse.push( new box(6890,90,40,10  ) );
+courthouse.push( new box(6890,260,40,10)  );
+courthouse.push( new box(7000,100,20,170) ); //right pillar
+courthouse.push( new box(6990,90,40,10)   );
+courthouse.push( new box(6990,260,40,10)  );
 
 //create random clouds
 var clouds = []
@@ -255,87 +136,15 @@ for (i = 0; i < 50; i++) {
 }
 
 var coins = [];
-//coin1
-coins.push({
-  x: 260,
-  y: 70,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin2
-coins.push({
-  x: 50,
-  y: 170,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin3
-coins.push({
-  x: -40,
-  y: 30,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin4
-coins.push({
-  x: 1005,
-  y: 70,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin5
-coins.push({
-  x: 705,
-  y: 70,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin6
-coins.push({
-  x: door.x - 180,
-  y: 175,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin7
-coins.push({
-  x: 1910,
-  y: 70,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin8
-coins.push({
-  x: briefcase.x - 30,
-  y: briefcase.y + 40,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
-//coin9
-coins.push({
-  x: 2805,
-  y: 70,
-  width: 10,
-  height: 10,
-  color: "yellow",
-  count: 0
-});
+coins.push( new coins_obj(260,70,10,10,"yellow",0) ); //coin1
+coins.push( new coins_obj(50,170,10,10,"yellow",0) ); //coin2
+coins.push( new coins_obj(-40,30,10,10,"yellow",0) ); //coin3
+coins.push( new coins_obj(1005,70,10,10,"yellow",0) ); //coin4
+coins.push( new coins_obj(705,70,10,10,"yellow",0) ); //coin5
+coins.push( new coins_obj(door.x - 180,175,10,10,"yellow",0) ); //coin6
+coins.push( new coins_obj(1910,70,10,10,"yellow",0) ); //coin7
+coins.push( new coins_obj(briefcase.x - 30,briefcase.y + 40,10,10,"yellow",0) ); //coin8
+coins.push( new coins_obj(2805,70,10,10,"yellow",0) ); //coin9
 
 //intitalize some variables
 var originx = 0;
@@ -349,6 +158,8 @@ var coin_count = 0;
 var box_color = 250;
 canvas.width = width;
 canvas.height = height;
+var box_width = 25;
+var falling_speed = 5;
 
 //if player has already gone through coins 1-3, set them to off
 if (wall.x < -60) {
@@ -375,7 +186,6 @@ if (gravity < .2) {
 function update() {
   frame_count++;
 
-
   // check keys
   if (keys[38] || keys[32]) {
     // up arrow or space
@@ -387,14 +197,12 @@ function update() {
   }
 
   //put a gap in the path every 50 blocks
+  next_blockx = boxes[boxes.length - 1].x + boxes[boxes.length - 1].width - 2;
   if (boxes.length % 50 === 0) {
-    next_blockx = boxes[boxes.length - 1].x + boxes[boxes.length - 1].width - 2 + gap_length;
-  } else {
-    next_blockx = boxes[boxes.length - 1].x + boxes[boxes.length - 1].width - 2;
+    next_blockx = next_blockx + gap_length;
   }
   next_blocky = boxes[boxes.length - 1].y;
 
-  var box_width = 25;
   var box_height = (Math.random() * (160 - 50) + 50) - box_width;
 
   if (keys[39]) {
@@ -424,12 +232,13 @@ function update() {
       wall.x = wall.x - 2;
       briefcase.x = briefcase.x - 2;
       if (boxes.length < 245 && right_button_count % 12 === 0 && guy.count > 0 && originx < 0 && player.y < 260) {
-        boxes.push({
-          x: next_blockx,
-          y: next_blocky,
-          width: box_width,
-          height: box_height,
-        });
+        boxes.push( new box(next_blockx,next_blocky,box_width,box_height) ); 
+   //   boxes.push({
+   //     x: next_blockx,
+   //     y: next_blocky,
+   //     width: box_width,
+   //     height: box_height,
+   //   });
       }
     } else {
       player.x++
@@ -466,7 +275,6 @@ function update() {
     }
   }
 
-
   player.velX *= friction;
   player.velY += gravity;
 
@@ -479,7 +287,6 @@ function update() {
   ctx.fillRect(0, 0, width, height);
 
   //falling
-  falling_speed = 5;
   if (player.y > height - player.height - 5) {
     if (originy > -200) {
       originy -= falling_speed;
@@ -509,7 +316,6 @@ function update() {
   }
 
   player.grounded = false;
-
 
   for (var i = 0; i < boxes.length; i++) {
     if ((boxes[i].x + boxes[i].width > 0) && (boxes[i].x < width)) {
@@ -645,7 +451,6 @@ function update() {
       }
     }
   }
-
 
   if (player.grounded) {
     player.velY = 0;
