@@ -3,6 +3,15 @@
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
+// Define a "unit_descriptor" object
+function unit_descriptor(sections, tracts, DOI, unit_number){
+    this.sections = sections;
+    this.tracts = tracts;
+    this.DOI = DOI;
+    this.num = unit_number;
+}
+
+
 var canvas = document.getElementById("canvas"),
   ctx = canvas.getContext("2d"),
   width = 500,
