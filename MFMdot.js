@@ -3,11 +3,24 @@
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
-var canvas = document.getElementById("canvas"),
-  ctx = canvas.getContext("2d"),
-  width = 500,
-  height = 300,
-  player = {
+var width = 500;
+var height = 300;
+var canvas = document.getElementById("canvas");
+
+canvas.width = width*2;
+canvas.height = height*2;
+
+canvas.style.width = "500px";
+canvas.style.height = "300px";
+
+//canvas.style.width = width;
+//canvas.style.height = height;
+
+var ctx = canvas.getContext("2d");
+
+ctx.scale(2,2);
+
+  var player = {
     x: width / 2,
     y: 0,
     width: 5,
@@ -948,6 +961,17 @@ function colCheck(shapeA, shapeB) {
     }
   }
   return colDir;
+}
+
+var dialog = [];
+var dialogCount = 0;
+dialog.push("talk 1");
+dialog.push("talk 2");
+dialog.push("talk 3");
+
+function dialogNext(){
+  dialogCount++;
+  document.getElementById("dialogBox").innerHTML = dialog[dialogCount];
 }
 
 document.body.addEventListener("keydown", function(e) {
