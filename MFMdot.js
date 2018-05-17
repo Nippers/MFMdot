@@ -21,7 +21,6 @@ function coins_obj(x,y,width,height,color,count){
     this.count = count;
 }
 
-
 var canvas = document.getElementById("canvas"),
   ctx = canvas.getContext("2d"),
   width = 500,
@@ -468,7 +467,6 @@ function update() {
 
   }
 
-
   for (var i = 0; i < coins.length; i++) {
     ctx.fillStyle = coins[i].color;
     ctx.fillRect(coins[i].x, coins[i].y, coins[i].width, coins[i].height);
@@ -706,28 +704,21 @@ function update() {
   }
 
   //starting instructions
-
   if (coins[0].count === 0) {
+    ctx.font = "bold 18px Helvetica";
+    ctx.fillStyle = "black";
     if (frame_count < 150) {
-      ctx.font = "bold 18px Helvetica";
-      ctx.fillStyle = "black";
       ctx.fillText("The Pathetic Dot", 70, 100);
     } else if (frame_count < 300) {
-      ctx.font = "18px Helvetica";
       ctx.fillText("Use arrow keys to move and jump.", 70, 100);
     } else if (frame_count < 450) {
-      ctx.font = "18px Helvetica";
       ctx.fillText("Yellow squares contain new information...", 70, 100);
     } else if (frame_count < 600) {
-      ctx.font = "18px Helvetica";
       ctx.fillText("...Bump them for instructions.", 70, 100);
     }
   }
 
-
 } //end of update function
-
-
 
 function colCheck(shapeA, shapeB) {
   // get the vectors to check against
@@ -771,7 +762,6 @@ document.body.addEventListener("keydown", function(e) {
 document.body.addEventListener("keyup", function(e) {
   keys[e.keyCode] = false;
 });
-
 
 window.addEventListener("load", function() {
   update();
