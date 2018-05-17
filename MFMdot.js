@@ -753,6 +753,17 @@ function colCheck(shapeA, shapeB) {
   return colDir;
 }
 
+var dialog = [];
+var dialogCount = 0;
+dialog.push("talk 1");
+dialog.push("talk 2");
+dialog.push("talk 3");
+
+function dialogNext(){
+  dialogCount ++;
+  document.getElementById("dialogBox").innerHTML = dialog[dialogCount];
+}
+
 document.body.addEventListener("keydown", function(e) {
   keys[e.keyCode] = true;
 });
