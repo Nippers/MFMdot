@@ -1,7 +1,34 @@
-(function() {
+(function(){
   var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
   window.requestAnimationFrame = requestAnimationFrame;
 })();
+
+$(document).ready(function(){
+    
+    // Action for clicking on #instructionBoxButton
+    $('#instructionBoxButton').click(function(){
+        $('#instructionBox').hide();
+        pause = false;
+	for (var i = 0; i < instructions.length; i++) {
+	    instructions[i].color = "yellow";  // not quite right...don't want to do for all instructions
+	}
+    });
+
+    // Action for clicking on #conversationBoxButton
+    // Need to attach to document or a parent element already on the DOM, because #conversationBoxButton doesn't yet exist
+    // See https://stackoverflow.com/questions/10920355/attaching-click-event-to-a-jquery-object-not-yet-added-to-the-dom
+//      $('#conversationBox').on('click','#finalConversationBoxButton', function(){
+//         $('#conversationBox').hide();
+//         pause = false;
+//         j = 0;
+//      });
+
+//      $('#conversationBox').on('click','#conversationBoxButton', function(){
+//         j ++;
+//	 document.getElementById("conversationBox").innerHTML = conversations[0][j].speaker+' '+conversations[0][j].text+'<br><button id="conversationBoxButton">...</button>' ;
+//      });
+
+});
 
 // Define a "box" object
 function box(x,y,width,height){
@@ -11,17 +38,23 @@ function box(x,y,width,height){
     this.height = height;
 }
 
-// Define a "coins_obj" object
-function coins_obj(x,y,width,height,color,dialog,open){
+// Define a "instructions_obj" object
+function instructions_obj(x,y,width,height,color,text,open){
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.color = color;
-    this.dialog = dialog;
+    this.text = text;
     this.open  = open;
 }
 
+function conversations_obj(speaker,more,text,open){
+   this.speaker = speaker;
+   this.more = more;
+   this.text = text;
+   this.open = open;
+}
 var canvas = document.getElementById("canvas"),
 ctx = canvas.getContext("2d"),
 
@@ -136,26 +169,46 @@ for (i = 0; i < 50; i++) {
   });
 }
 
-dialog0 = "this is the first dialog (index 0)"
-dialog1 = "this is the second dialog (index 1)"
-dialog2 = "this is the 3rd dialog (index 2)"
-dialog3 = "this is the 4th dialog (index 3)"
-dialog4 = "this is the 5th dialog (index 4)"
-dialog5 = "this is the 6th dialog (index 5)"
-dialog6 = "this is the 7th dialog (index 6)"
-dialog7 = "this is the 8th dialog (index 7)"
-dialog8 = "this is the 9th dialog (index 8)"
+instruction0 = "this is the first instruction (index 0)"
+instruction1 = "this is the second instruction (index 1)"
+instruction2 = "this is the 3rd instruction (index 2)"
+instruction3 = "this is the 4th instruction (index 3)"
+instruction4 = "this is the 5th instruction (index 4)"
+instruction5 = "this is the 6th instruction (index 5)"
+instruction6 = "this is the 7th instruction (index 6)"
+instruction7 = "this is the 8th instruction (index 7)"
+instruction8 = "this is the 9th instruction (index 8)"
 
-var coins = [];
-coins.push( new coins_obj(260,70,10,10,"yellow",[dialog0],false) ); //coin0
-coins.push( new coins_obj(50,170,10,10,"yellow",[dialog1],false) ); //coin1
-coins.push( new coins_obj(-40,30,10,10,"yellow",[dialog2],false) ); //coin2
-coins.push( new coins_obj(1005,70,10,10,"yellow",[dialog3],false) ); //coin3
-coins.push( new coins_obj(705,70,10,10,"yellow",[dialog4],false) ); //coin4
-coins.push( new coins_obj(door.x - 180,175,10,10,"yellow",[dialog5],false) ); //coin5
-coins.push( new coins_obj(1910,70,10,10,"yellow",[dialog6],false) ); //coin6
-coins.push( new coins_obj(briefcase.x - 30,briefcase.y + 40,10,10,"yellow",[dialog7],false) ); //coin7
-coins.push( new coins_obj(2805,70,10,10,"yellow",[dialog8],false) ); //coin8
+var instructions = [];
+instructions.push( new instructions_obj(260,70,10,10,"yellow",[instruction0],false) ); //instruction 0
+instructions.push( new instructions_obj(50,170,10,10,"yellow",[instruction1],false) ); 
+instructions.push( new instructions_obj(-40,30,10,10,"yellow",[instruction2],false) ); 
+instructions.push( new instructions_obj(1005,70,10,10,"yellow",[instruction3],false) ); 
+instructions.push( new instructions_obj(705,70,10,10,"yellow",[instruction4],false) ); 
+instructions.push( new instructions_obj(door.x - 180,175,10,10,"yellow",[instruction5],false) );
+instructions.push( new instructions_obj(1910,70,10,10,"yellow",[instruction6],false) ); 
+instructions.push( new instructions_obj(briefcase.x - 30,briefcase.y + 40,10,10,"yellow",[instruction7],false) ); 
+instructions.push( new instructions_obj(2805,70,10,10,"yellow",[instruction8],false) ); 
+
+instructions.push( new instructions_obj(0.5*width,80,10,10,"green",[instruction8],false) );    // CSS testing for conversations
+
+var conversations = [];
+var nConversations = 9; // total number of conversations
+for ( var i = 0; i < nConversations-1 ; i++){
+  conversations.push([])
+}
+
+///////function conversations_obj(speaker,more,text,open){
+//conversation 0
+conversations[0].push( new conversations_obj("karen",true,"text1",false) );
+conversations[0].push( new conversations_obj("georgia",true,"text2",false) );
+conversations[0].push( new conversations_obj("karen",true,"text3",false) );
+conversations[0].push( new conversations_obj("georgia",false,"text_zasdf3",false) );
+
+//conversation 1
+conversations[1].push( new conversations_obj("craig",true,"text4",false) );
+conversations[1].push( new conversations_obj("julia",true,"text5",false) );
+conversations[1].push( new conversations_obj("craig",false,"text6",false) );
 
 //intitalize some variables
 var originx = 0;
@@ -170,26 +223,28 @@ canvas.height = height;
 var box_width = 25;
 var falling_speed = 5;
 var pause = false;
+var j = 0; //global counter
+var k = 0; //another global counter
 
-//if player has already gone through coins 1-3, set them to off
+//if player has already gone through instructions 1-3, set them to off
 if (wall.x < -60) {
-  coins[0].count = 4;
-  coins[1].count = 3;
-  coins[2].count = 7;
+  instructions[0].count = 4;
+  instructions[1].count = 3;
+  instructions[2].count = 7;
 }
-//if player has already gone through coin 4, set it to off
+//if player has already gone through instruction 4, set it to off
 if (gap_length < 180) {
-  coins[3].count = 7;
-  coins[4].count = 2;
+  instructions[3].count = 7;
+  instructions[4].count = 2;
 }
-//if door is visible, set coins 6 and 7 to off
+//if door is visible, set instructions 6 and 7 to off
 if (door.color !== "transparent") {
-  coins[5].count = 2;
-  coins[6].count = 7;
+  instructions[5].count = 2;
+  instructions[6].count = 7;
 }
-//if gravity is lower, set coin 8 to off
+//if gravity is lower, set instruction 8 to off
 if (gravity < .2) {
-  coins[7].count = 3;
+  instructions[7].count = 3;
 }
 
 //begin update function
@@ -197,7 +252,8 @@ function update() {
   frame_count++;
 
   // check keys
-  if (keys[38] || keys[32]) {
+  //if (keys[38] || keys[32]) {
+  if ( (keys[38] || keys[32]) && !pause ) {
     // up arrow or space
     if (!player.jumping && player.grounded) {
       player.jumping = true;
@@ -215,7 +271,8 @@ function update() {
 
   var box_height = (Math.random() * (160 - 50) + 50) - box_width;
 
-  if (keys[39]) {
+  //if (keys[39]) {
+  if (keys[39]  && !pause) {
     // right arrow
     if (player.x > 249) {
       guy.direction = "l";
@@ -224,8 +281,8 @@ function update() {
       for (var i = 0; i < boxes.length; i++) {
         boxes[i].x = boxes[i].x - 2;
       }
-      for (var i = 0; i < coins.length; i++) {
-        coins[i].x = coins[i].x - 2;
+      for (var i = 0; i < instructions.length; i++) {
+        instructions[i].x = instructions[i].x - 2;
       }
       for (var i = 0; i < courthouse.length; i++) {
         courthouse[i].x = courthouse[i].x - 2;
@@ -249,7 +306,8 @@ function update() {
     }
   }
 
-  if (keys[37]) {
+  //if (keys[37]) {
+  if (keys[37] && !pause) {
     // left arrow
     if (player.x < 251) {
       guy.direction = "r";
@@ -257,8 +315,8 @@ function update() {
       for (var i = 0; i < boxes.length; i++) {
         boxes[i].x = boxes[i].x + 2;
       }
-      for (var i = 0; i < coins.length; i++) {
-        coins[i].x = coins[i].x + 2;
+      for (var i = 0; i < instructions.length; i++) {
+        instructions[i].x = instructions[i].x + 2;
       }
       for (var i = 0; i < courthouse.length; i++) {
         courthouse[i].x = courthouse[i].x + 2;
@@ -300,8 +358,8 @@ function update() {
       for (i = 0; i < leaves.length; i++) {
         leaves[i].y -= falling_speed;
       }
-      for (i = 0; i < coins.length; i++) {
-        coins[i].y -= falling_speed;
+      for (i = 0; i < instructions.length; i++) {
+        instructions[i].y -= falling_speed;
       }
       for (i = 0; i < courthouse.length; i++) {
         courthouse[i].y -= falling_speed;
@@ -383,8 +441,8 @@ function update() {
     for (i = 0; i < clouds.length; i++) {
       clouds[i].y += .5;
     }
-    for (i = 0; i < coins.length; i++) {
-      coins[i].y += .5;
+    for (i = 0; i < instructions.length; i++) {
+      instructions[i].y += .5;
     }
     guy.y += .5;
     elevator.y -= .5;
@@ -402,13 +460,13 @@ function update() {
   }
   ctx.fillStyle = "transparent";
 
-  //check if player is colliding with coins
-  for (i = 0; i < coins.length; i++) {
-    var dir = colCheck(player, coins[i]);
+  //check if player is colliding with instructions
+  for (i = 0; i < instructions.length; i++) {
+    var dir = colCheck(player, instructions[i]);
     if (dir === "t") {
       player.grounded = true;
       player.jumping = false;
-      coins[i].open = true;  // can only be true for one coin at a time
+      instructions[i].open = true;  // can only be true for one instruction at a time
     }
   }
 
@@ -470,11 +528,11 @@ function update() {
     ctx.fillRect(clouds[i].x - clouds[i].width / 2, clouds[i].y + clouds[i].height / 2, clouds[i].width * 2, clouds[i].height);
   }
 
-  for (var i = 0; i < coins.length; i++) {
-    ctx.fillStyle = coins[i].color;
-    ctx.fillRect(coins[i].x, coins[i].y, coins[i].width, coins[i].height);
+  for (var i = 0; i < instructions.length; i++) {
+    ctx.fillStyle = instructions[i].color;
+    ctx.fillRect(instructions[i].x, instructions[i].y, instructions[i].width, instructions[i].height);
     ctx.fillStyle = "orange";
-    ctx.fillRect(coins[i].x + 2, coins[i].y + 2, coins[i].width - 4, coins[i].height - 4);
+    ctx.fillRect(instructions[i].x + 2, instructions[i].y + 2, instructions[i].width - 4, instructions[i].height - 4);
   }
 
   ctx.fillStyle = "red";
@@ -523,38 +581,54 @@ function update() {
     ctx.fillRect(30 + 13, 30 - 6, 2, 10);
   }
 
-  //font style for coins
-  ctx.font = "bold 16px Helvetica";
-  ctx.fillStyle = "black";
+  //font style for instructions
+//  ctx.font = "bold 16px Helvetica";
+//  ctx.fillStyle = "black";
 
-  // display dialog if necessary
-  for (i = 0; i < coins.length; i++) {
-    if ( coins[i].open ){
-      coins[i].color = "grey";
-      document.getElementById("dialogBoxText").innerHTML = "yes "+coins[i].dialog[0]+"<br>"+coins[i].open ; 
+  // display instruction text if one of the instructions is open
+  for (var i = 0; i < instructions.length; i++) {
+    if ( instructions[i].open ){
+      instructions[i].open = false;
+      instructions[i].color = "grey";
       pause = true;
-    //call freezeUpdateLoop // prevent K&G from moving
-      coins[i].open = false;  // done colliding, so reset to false
-      coins[i].color = "yellow"; // reset color
+      document.getElementById("instructionBox").style.display = 'block';
+      document.getElementById("instructionBoxText").innerHTML = 'yes '+instructions[i].text[0]+'<br>'+instructions[i].open ;
+      document.getElementById("instructionBoxButton").style.display = 'block';
     }
   }
 
-  //starting instructions
-//  if (coins[0].open ) {
-//    ctx.font = "bold 18px Helvetica";
-//    ctx.fillStyle = "black";
-//    if (frame_count < 150) {
-//      ctx.fillText("The Pathetic Dot", 70, 100);
-//    } else if (frame_count < 300) {
-//      ctx.fillText("Use arrow keys to move and jump.", 70, 100);
-//    } else if (frame_count < 450) {
-//      ctx.fillText("Yellow squares contain new information...", 70, 100);
-//    } else if (frame_count < 600) {
-//      ctx.fillText("...Bump them for instructions.", 70, 100);
-//    }
-//  }
+  // CSS testing for conversations
+    var dir = colCheck(player, instructions[instructions.length-1]);
+    if (dir === "t") {
+      player.grounded = true;
+      player.jumping = false;
+      conversations[0].open = true;  // can only be true for one instruction at a time
+    }
+
+   // note that j is initialzed to 0 as a global variable, and augmented and reset to 0 by buttons
+   for (var i = 0; i < conversations.length ; i++){
+      if ( conversations[i].open ){
+         k = i // set global variable k for use in nextSegment function
+         conversations[i].open = false;
+  	 pause = true;
+  	 document.getElementById("conversationBox").style.display = 'block';
+      	 document.getElementById("conversationBoxText").innerHTML = conversations[k][j].speaker+' '+conversations[k][j].text // j = 0 always here
+         document.getElementById("conversationBoxButton").style.display = 'block';
+      }  
+   }
 
 } //end of update function
+
+function nextSegment(){
+   if ( conversations[k][j].more ){
+      j ++ ; 
+      document.getElementById("conversationBoxText").innerHTML = conversations[k][j].speaker+' '+conversations[k][j].text;
+   } else {
+      document.getElementById("conversationBox").style.display = 'none'; // $('#conversationBox').hide();
+      j = 0;
+      pause = false;
+   }
+}
 
 function colCheck(shapeA, shapeB) {
   // get the vectors to check against
@@ -591,16 +665,19 @@ function colCheck(shapeA, shapeB) {
   return colDir;
 }
 
-var dialog = [];
-var dialogCount = 0;
-dialog.push("talk index 0");
-dialog.push("talk index 1");
-dialog.push("talk index 2");
+// this function is called when a button in the instruction box is pressed
+// CSS replaced all this with jQuery ... get rid of the "onclick" on button.
+//function instructionNext(){
+  // reset all instructions to closed (not open) and go back to original color
 
-function dialogNext(){
-  dialogCount ++;
-  document.getElementById("dialogBoxText").innerHTML = dialog[dialogCount];
-}
+//  for (var i = 0; i < instructions.length; i++) {
+//    instructions[i].open = false;      
+//    instructions[i].color = "yellow";
+//  }
+//  pause = false;  // allow movement again
+//  document.getElementById("instructionBox").style.display = 'none';
+//  document.getElementById("instructionBoxButton").style.display = 'none';
+//}
 
 document.body.addEventListener("keydown", function(e) {
   keys[e.keyCode] = true;

@@ -11,21 +11,30 @@ canvas {
   left : 0;
 }
 
-#dialogBox { 
+#instructionBox, #conversationBox { 
   position : absolute; 
   width : 250px ; 
   height : 300px ;
   border : 1px solid blue; 
   top : 0;
   left : 501;
+  display : none;
 }
 
-#dialogBoxButton {
+button {
   color : black;
   background-color: #dddddd;
   border : 1px solid black;
+  width : 35px ; 
+  display : none;
 }
 
-#dialogBoxButton:hover {
+button:hover {
   background-color : red;
 }
+
+/*
+#instructionBoxButton {
+  display : none;
+}
+*/
