@@ -12,13 +12,14 @@ function box(x,y,width,height){
 }
 
 // Define a "coins_obj" object
-function coins_obj(x,y,width,height,color,count){
+function coins_obj(x,y,width,height,color,dialog,open){
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.color = color;
-    this.count = count;
+    this.dialog = dialog;
+    this.open  = open;
 }
 
 var canvas = document.getElementById("canvas"),
@@ -135,16 +136,26 @@ for (i = 0; i < 50; i++) {
   });
 }
 
+dialog0 = "this is the first dialog (index 0)"
+dialog1 = "this is the second dialog (index 1)"
+dialog2 = "this is the 3rd dialog (index 2)"
+dialog3 = "this is the 4th dialog (index 3)"
+dialog4 = "this is the 5th dialog (index 4)"
+dialog5 = "this is the 6th dialog (index 5)"
+dialog6 = "this is the 7th dialog (index 6)"
+dialog7 = "this is the 8th dialog (index 7)"
+dialog8 = "this is the 9th dialog (index 8)"
+
 var coins = [];
-coins.push( new coins_obj(260,70,10,10,"yellow",0) ); //coin1
-coins.push( new coins_obj(50,170,10,10,"yellow",0) ); //coin2
-coins.push( new coins_obj(-40,30,10,10,"yellow",0) ); //coin3
-coins.push( new coins_obj(1005,70,10,10,"yellow",0) ); //coin4
-coins.push( new coins_obj(705,70,10,10,"yellow",0) ); //coin5
-coins.push( new coins_obj(door.x - 180,175,10,10,"yellow",0) ); //coin6
-coins.push( new coins_obj(1910,70,10,10,"yellow",0) ); //coin7
-coins.push( new coins_obj(briefcase.x - 30,briefcase.y + 40,10,10,"yellow",0) ); //coin8
-coins.push( new coins_obj(2805,70,10,10,"yellow",0) ); //coin9
+coins.push( new coins_obj(260,70,10,10,"yellow",[dialog0],false) ); //coin0
+coins.push( new coins_obj(50,170,10,10,"yellow",[dialog1],false) ); //coin1
+coins.push( new coins_obj(-40,30,10,10,"yellow",[dialog2],false) ); //coin2
+coins.push( new coins_obj(1005,70,10,10,"yellow",[dialog3],false) ); //coin3
+coins.push( new coins_obj(705,70,10,10,"yellow",[dialog4],false) ); //coin4
+coins.push( new coins_obj(door.x - 180,175,10,10,"yellow",[dialog5],false) ); //coin5
+coins.push( new coins_obj(1910,70,10,10,"yellow",[dialog6],false) ); //coin6
+coins.push( new coins_obj(briefcase.x - 30,briefcase.y + 40,10,10,"yellow",[dialog7],false) ); //coin7
+coins.push( new coins_obj(2805,70,10,10,"yellow",[dialog8],false) ); //coin8
 
 //intitalize some variables
 var originx = 0;
@@ -153,12 +164,12 @@ var right_button_count = 0;
 var origin = 0;
 var gap_length = 180;
 var frame_count = 0;
-var coin_count = 0;
 var box_color = 250;
 canvas.width = width;
 canvas.height = height;
 var box_width = 25;
 var falling_speed = 5;
+var pause = false;
 
 //if player has already gone through coins 1-3, set them to off
 if (wall.x < -60) {
@@ -232,12 +243,6 @@ function update() {
       briefcase.x = briefcase.x - 2;
       if (boxes.length < 245 && right_button_count % 12 === 0 && guy.count > 0 && originx < 0 && player.y < 260) {
         boxes.push( new box(next_blockx,next_blocky,box_width,box_height) ); 
-   //   boxes.push({
-   //     x: next_blockx,
-   //     y: next_blocky,
-   //     width: box_width,
-   //     height: box_height,
-   //   });
       }
     } else {
       player.x++
@@ -403,8 +408,7 @@ function update() {
     if (dir === "t") {
       player.grounded = true;
       player.jumping = false;
-      coin_count++;
-      coins[i].count++;
+      coins[i].open = true;  // can only be true for one coin at a time
     }
   }
 
@@ -523,198 +527,32 @@ function update() {
   ctx.font = "bold 16px Helvetica";
   ctx.fillStyle = "black";
 
-  //text for coin 1
-  if (coins[0].count === 1) {
-    ctx.fillText("The pathetic dot is controlled by several outside forces...", 20, 60);
-  } else if (coins[0].count === 2) {
-    ctx.fillText("Specifically laws, social norms, and the physical", 20, 60);
-    ctx.fillText("architecture of the world.", 20, 80);
-  } else if (coins[0].count === 3) {
-    ctx.fillText("Computer code is part of the architecture of the world.", 20, 60);
-    ctx.fillText("Accordingly, code controls the dot's behavior.", 20, 80);
-  } else if (coins[0].count === 4) {
-    coins[0].color = "grey";
-  } else if (coins[0].count > 4) {
-    coins[0].count = 0;
-  }
-  if (coins[0].count === 0) {
-    coins[0].color = "yellow";
-  }
-
-  //text for coin 2
-
-  if (coins[1].count === 1) {
-    ctx.fillText("Your client is hiding in a tree.", 20, 60);
-  } else if (coins[1].count === 2) {
-    ctx.fillText("The objective of this game is to fetch him down", 20, 60);
-    ctx.fillText("and bring him to the court house in time for his", 20, 80);
-    ctx.fillText("arraignment.", 20, 100);
-  } else if (coins[1].count === 3) {
-    coins[1].color = "grey";
-  } else if (coins[1].count > 3) {
-    coins[1].count = 0;
-  }
-  if (coins[1].count === 0) {
-    coins[1].color = "yellow";
-  }
-
-  //text for coin 3
-
-  if (coins[2].count === 1) {
-    ctx.fillText("The code will not allow you to reach your client.", 20, 60);
-  } else if (coins[2].count === 2) {
-    ctx.fillText("The invisible hand of cyberspace has placed an", 20, 60);
-    ctx.fillText("invisible wall between you and him.", 20, 80);
-  } else if (coins[2].count === 3) {
-    ctx.fillText("To remove the wall, you must change the code.", 20, 60);
-  } else if (coins[2].count === 4) {
-    ctx.fillText("Look in the javascript box to the left and scroll to line 31.", 20, 60);
-    ctx.fillText("It says: x: -60", 20, 80);
-  } else if (coins[2].count === 5) {
-    ctx.fillText("Change -60 to -100.", 20, 60);
-    ctx.fillText("This will move the wall left 40 pixels.", 20, 80);
-  } else if (coins[2].count === 6) {
-    ctx.fillText("Now click the RUN button in the upper left corner", 20, 60);
-    ctx.fillText("to restart the game, then click on the game to activate it.", 20, 80);
-  } else if (coins[2].count === 7) {
-    coins[2].color = "grey";
-  } else if (coins[2].count > 7) {
-    coins[2].count = 0;
-  }
-  if (coins[2].count === 0) {
-    coins[2].color = "yellow";
-  }
-
-  //text for coin 4
-
-  if (coins[3].count === 1) {
-    ctx.fillText("This gap is too big to jump across.", 20, 60);
-  } else if (coins[3].count === 2) {
-    ctx.fillText("Yet again the code of the game is constraining", 20, 60);
-    ctx.fillText("your actions.", 20, 80);
-  } else if (coins[3].count === 3) {
-    ctx.fillText("To make the gap smaller, scroll to line 337 in the", 20, 60);
-    ctx.fillText("javascript box on the left.", 20, 80);
-  } else if (coins[3].count === 4) {
-    ctx.fillText("It says:", 20, 60);
-    ctx.fillText("var gap_length = 180;", 20, 80);
-  } else if (coins[3].count === 5) {
-    ctx.fillText("Change the 180 at the end of the line to 100.", 20, 60);
-  } else if (coins[3].count === 6) {
-    ctx.fillText("Now click the RUN button in the upper left corner", 20, 60);
-    ctx.fillText("to restart. Then click back in the game window.", 20, 80);
-  } else if (coins[3].count === 7) {
-    coins[3].color = "grey";
-  } else if (coins[3].count > 7) {
-    coins[3].count = 0;
-  }
-  if (coins[3].count === 0) {
-    coins[3].color = "yellow";
-  }
-
-  //text for coin 5
-
-  if (coins[4].count === 1) {
-    ctx.fillText("To make sure your client stays with you the next time", 20, 60);
-    ctx.fillText("you restart the game, go to line 27 and change the 0 to a 1.", 20, 80);
-  } else if (coins[4].count === 2) {
-    coins[4].color = "grey";
-  } else if (coins[4].count > 2) {
-    coins[4].count = 0;
-  }
-  if (coins[4].count === 0) {
-    coins[4].color = "yellow";
-  }
-
-  //text for coin 6
-
-  if (coins[5].count === 1) {
-    ctx.fillText("The court house door is invisible.", 20, 60);
-    ctx.fillText("Change the door's color to enter.", 20, 80);
-  } else if (coins[5].count === 2) {
-    coins[5].color = "grey";
-  } else if (coins[5].count > 2) {
-    coins[5].count = 0;
-  }
-  if (coins[5].count === 0) {
-    coins[5].color = "yellow";
-  }
-
-  //text for coin 7
-
-  if (coins[6].count === 1) {
-    ctx.fillText("The code of the game constrains your", 20, 60);
-    ctx.fillText("actions in the game, which is relatively", 20, 80);
-    ctx.fillText("unoffensive, at least in a moral sense.", 20, 100);
-  } else if (coins[6].count === 2) {
-    ctx.fillText("But the broader code of the internet", 20, 60);
-    ctx.fillText("can determine your actions in real life.", 20, 80);
-  } else if (coins[6].count === 3) {
-    ctx.fillText("Code allows you to order shoes online", 20, 60);
-    ctx.fillText("without worrying about your credit card being stolen.", 20, 80);
-  } else if (coins[6].count === 4) {
-    ctx.fillText("But it also makes your copyrights very", 20, 60);
-    ctx.fillText("difficult to enforce.", 20, 80);
-  } else if (coins[6].count === 5) {
-    ctx.fillText("Are you okay with coders telling you what to do?", 20, 60);
-  } else if (coins[6].count === 6) {
-    ctx.fillText("Because right now, coders decide what the internet looks like.", 20, 60);
-    ctx.fillText("Wouldn't you rather have a say?", 20, 80);
-  } else if (coins[6].count === 7) {
-    coins[6].color = "grey";
-  } else if (coins[6].count > 7) {
-    coins[6].count = 0;
-  }
-  if (coins[6].count === 0) {
-    coins[6].color = "yellow";
-  }
-
-  //text for coin 8
-
-  if (coins[7].count === 1) {
-    ctx.fillText("You can't jump high enough to reach your briefcase.", 20, 60);
-  } else if (coins[7].count === 2) {
-    ctx.fillText("Find the gravity variable in the code and lower it", 20, 60);
-    ctx.fillText("so you can jump higher.", 20, 80);
-  } else if (coins[7].count === 3) {
-    coins[7].color = "grey";
-  } else if (coins[7].count > 3) {
-    coins[7].count = 0;
-  }
-  if (coins[7].count === 0) {
-    coins[7].color = "yellow";
-  }
-
-  //text for coin 9
-
-  if (coins[8].count === 1) {
-    ctx.fillText("Before you go to the courthouse, you need to", 20, 60);
-    ctx.fillText("find your briefcase.", 20, 80);
-  } else if (coins[8].count === 2) {
-    ctx.fillText("It is full of important and privileged information.", 20, 60);
-  } else if (coins[8].count === 3) {
-    coins[8].color = "grey";
-  } else if (coins[8].count > 3) {
-    coins[8].count = 0;
-  }
-  if (coins[8].count === 0) {
-    coins[8].color = "yellow";
+  // display dialog if necessary
+  for (i = 0; i < coins.length; i++) {
+    if ( coins[i].open ){
+      coins[i].color = "grey";
+      document.getElementById("dialogBoxText").innerHTML = "yes "+coins[i].dialog[0]+"<br>"+coins[i].open ; 
+      pause = true;
+    //call freezeUpdateLoop // prevent K&G from moving
+      coins[i].open = false;  // done colliding, so reset to false
+      coins[i].color = "yellow"; // reset color
+    }
   }
 
   //starting instructions
-  if (coins[0].count === 0) {
-    ctx.font = "bold 18px Helvetica";
-    ctx.fillStyle = "black";
-    if (frame_count < 150) {
-      ctx.fillText("The Pathetic Dot", 70, 100);
-    } else if (frame_count < 300) {
-      ctx.fillText("Use arrow keys to move and jump.", 70, 100);
-    } else if (frame_count < 450) {
-      ctx.fillText("Yellow squares contain new information...", 70, 100);
-    } else if (frame_count < 600) {
-      ctx.fillText("...Bump them for instructions.", 70, 100);
-    }
-  }
+//  if (coins[0].open ) {
+//    ctx.font = "bold 18px Helvetica";
+//    ctx.fillStyle = "black";
+//    if (frame_count < 150) {
+//      ctx.fillText("The Pathetic Dot", 70, 100);
+//    } else if (frame_count < 300) {
+//      ctx.fillText("Use arrow keys to move and jump.", 70, 100);
+//    } else if (frame_count < 450) {
+//      ctx.fillText("Yellow squares contain new information...", 70, 100);
+//    } else if (frame_count < 600) {
+//      ctx.fillText("...Bump them for instructions.", 70, 100);
+//    }
+//  }
 
 } //end of update function
 
@@ -755,13 +593,13 @@ function colCheck(shapeA, shapeB) {
 
 var dialog = [];
 var dialogCount = 0;
-dialog.push("talk 1");
-dialog.push("talk 2");
-dialog.push("talk 3");
+dialog.push("talk index 0");
+dialog.push("talk index 1");
+dialog.push("talk index 2");
 
 function dialogNext(){
   dialogCount ++;
-  document.getElementById("dialogBox").innerHTML = dialog[dialogCount];
+  document.getElementById("dialogBoxText").innerHTML = dialog[dialogCount];
 }
 
 document.body.addEventListener("keydown", function(e) {
