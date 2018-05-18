@@ -5,28 +5,24 @@
 
 $(document).ready(function(){
     
-    // Action for clicking on #instructionBoxButton
-    $('#instructionBoxButton').click(function(){
-        $('#instructionBox').hide();
-        pause = false;
-	for (var i = 0; i < instructions.length; i++) {
-	    instructions[i].color = "yellow";  // not quite right...don't want to do for all instructions
-	}
-    });
+   // Action for clicking on #instructionBoxButton
+   $('#instructionBoxButton').click(function(){
+      $('#instructionBox').hide();
+      pause = false;
+      for (var i = 0; i < instructions.length; i++) {
+	 instructions[i].color = "yellow";  // not quite right...don't want to do for all instructions
+      }
+   });
 
-    // Action for clicking on #conversationBoxButton
-    // Need to attach to document or a parent element already on the DOM, because #conversationBoxButton doesn't yet exist
-    // See https://stackoverflow.com/questions/10920355/attaching-click-event-to-a-jquery-object-not-yet-added-to-the-dom
-//      $('#conversationBox').on('click','#finalConversationBoxButton', function(){
-//         $('#conversationBox').hide();
-//         pause = false;
-//         j = 0;
-//      });
+   // Action for clicking on #conversationBoxButton
+   $('#conversationBoxButton').click(function(){
+      j ++;
+      advanceConversation()
+   });
 
-//      $('#conversationBox').on('click','#conversationBoxButton', function(){
-//         j ++;
-//	 document.getElementById("conversationBox").innerHTML = conversations[0][j].speaker+' '+conversations[0][j].text+'<br><button id="conversationBoxButton">...</button>' ;
-//      });
+    // See https://stackoverflow.com/questions/10920355/attaching-click-event-to-a-jquery-object-not-yet-added-to-the-dom 
+    // for how to use jquery for attaching something that doesn't yet exsit on the DOM
+    // Trick is to attach to document or a parent element already on the DOM
 
 });
 
@@ -49,9 +45,9 @@ function instructions_obj(x,y,width,height,color,text,open){
     this.open  = open;
 }
 
-function conversations_obj(speaker,more,text,open){
+// Define a "conversations_obj" object
+function conversations_obj(speaker,text,open){
    this.speaker = speaker;
-   this.more = more;
    this.text = text;
    this.open = open;
 }
@@ -198,17 +194,18 @@ for ( var i = 0; i < nConversations-1 ; i++){
   conversations.push([])
 }
 
-///////function conversations_obj(speaker,more,text,open){
+///////function conversations_obj(speaker,text,open){
 //conversation 0
-conversations[0].push( new conversations_obj("karen",true,"text1",false) );
-conversations[0].push( new conversations_obj("georgia",true,"text2",false) );
-conversations[0].push( new conversations_obj("karen",true,"text3",false) );
-conversations[0].push( new conversations_obj("georgia",false,"text_zasdf3",false) );
+conversations[0].push( new conversations_obj("karen","text1",false) );
+conversations[0].push( new conversations_obj("georgia","text2",false) );
+conversations[0].push( new conversations_obj("karen","text3",false) );
+conversations[0].push( new conversations_obj("georgia","text4",false) );
+conversations[0].push( new conversations_obj("karen","text5",false) );
 
 //conversation 1
-conversations[1].push( new conversations_obj("craig",true,"text4",false) );
-conversations[1].push( new conversations_obj("julia",true,"text5",false) );
-conversations[1].push( new conversations_obj("craig",false,"text6",false) );
+conversations[1].push( new conversations_obj("craig","text4",false) );
+conversations[1].push( new conversations_obj("julia","text5",false) );
+conversations[1].push( new conversations_obj("craig","text6",false) );
 
 //intitalize some variables
 var originx = 0;
@@ -252,7 +249,6 @@ function update() {
   frame_count++;
 
   // check keys
-  //if (keys[38] || keys[32]) {
   if ( (keys[38] || keys[32]) && !pause ) {
     // up arrow or space
     if (!player.jumping && player.grounded) {
@@ -271,7 +267,6 @@ function update() {
 
   var box_height = (Math.random() * (160 - 50) + 50) - box_width;
 
-  //if (keys[39]) {
   if (keys[39]  && !pause) {
     // right arrow
     if (player.x > 249) {
@@ -306,7 +301,6 @@ function update() {
     }
   }
 
-  //if (keys[37]) {
   if (keys[37] && !pause) {
     // left arrow
     if (player.x < 251) {
@@ -602,27 +596,36 @@ function update() {
     if (dir === "t") {
       player.grounded = true;
       player.jumping = false;
-      conversations[0].open = true;  // can only be true for one instruction at a time
+      conversations[0][0].open = true;  // can only be true for one instruction at a time
     }
 
    // note that j is initialzed to 0 as a global variable, and augmented and reset to 0 by buttons
    for (var i = 0; i < conversations.length ; i++){
-      if ( conversations[i].open ){
-         k = i // set global variable k for use in nextSegment function
-         conversations[i].open = false;
+      if ( conversations[i][0].open ){
+         k = i // set global variable k for use in advanceConversation and jQuery when clicking #conversationBoxButton
+         conversations[i][0].open = false;
   	 pause = true;
-  	 document.getElementById("conversationBox").style.display = 'block';
-      	 document.getElementById("conversationBoxText").innerHTML = conversations[k][j].speaker+' '+conversations[k][j].text // j = 0 always here
-         document.getElementById("conversationBoxButton").style.display = 'block';
+
+         advanceConversation()  // j = 0 initially
       }  
    }
 
 } //end of update function
 
-function nextSegment(){
-   if ( conversations[k][j].more ){
-      j ++ ; 
+function advanceConversation(){
+
+   var numExchanges = conversations[k].length;  // the number of exchanges in this conversation
+
+   if ( j < numExchanges ){
+      document.getElementById("conversationBox").style.display = 'block';
+      document.getElementById("conversationBoxButton").style.display = 'block';
       document.getElementById("conversationBoxText").innerHTML = conversations[k][j].speaker+' '+conversations[k][j].text;
+      document.getElementById("headPic").innerHTML = '<img src="'+conversations[k][j].speaker.toLowerCase()+'Head.png" width="50px" style="float:left">';
+      if(conversations[k][j].speaker.toLowerCase() === "karen"){
+	 document.getElementById("headPic").style.float="left";
+      }else{
+	 document.getElementById("headPic").style.float="right";
+      }
    } else {
       document.getElementById("conversationBox").style.display = 'none'; // $('#conversationBox').hide();
       j = 0;
@@ -664,20 +667,6 @@ function colCheck(shapeA, shapeB) {
   }
   return colDir;
 }
-
-// this function is called when a button in the instruction box is pressed
-// CSS replaced all this with jQuery ... get rid of the "onclick" on button.
-//function instructionNext(){
-  // reset all instructions to closed (not open) and go back to original color
-
-//  for (var i = 0; i < instructions.length; i++) {
-//    instructions[i].open = false;      
-//    instructions[i].color = "yellow";
-//  }
-//  pause = false;  // allow movement again
-//  document.getElementById("instructionBox").style.display = 'none';
-//  document.getElementById("instructionBoxButton").style.display = 'none';
-//}
 
 document.body.addEventListener("keydown", function(e) {
   keys[e.keyCode] = true;

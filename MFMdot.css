@@ -27,6 +27,7 @@ button {
   border : 1px solid black;
   width : 35px ; 
   display : none;
+  margin: 0 auto;
 }
 
 button:hover {
