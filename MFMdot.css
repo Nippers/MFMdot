@@ -6,32 +6,53 @@
 
 canvas {
   border: 1px solid #000;
-  position : absolute; 
+  position : absolute;
   top : 0;
   left : 0;
 }
 
-#instructionBox, #conversationBox { 
-  position : absolute; 
-  width : 250px ; 
-  height : 300px ;
-  border : 1px solid blue; 
+#instructionBox, #conversationBox {
+  padding:10px;
+  font-family: monospace;
+  font-size: 16px;
+  background-color: ivory;
+  position : absolute;
+  width : 250px;
+  height : 300px;
+  border : 2px solid black;
   top : 0;
-  left : 501;
+  left : 600;
   display : none;
+}
+span{
+  color: navy;
+}
+span:hover{
+  background-color: pink;
+  color: black;
+}
+#footnoteBox{
+  padding:10px;
+  font-size: 14px;
+  position:absolute;
+  top:0;
+  left: 849px;
+  width:200px;
+  border: 1px solid black;
+  display: none;
 }
 
 button {
   color : black;
-  background-color: #dddddd;
+  background-color: white;
   border : 1px solid black;
-  width : 35px ; 
+  width : 35px ;
   display : none;
   margin: 0 auto;
 }
 
 button:hover {
-  background-color : red;
+  background-color : pink;
 }
 
 /*
