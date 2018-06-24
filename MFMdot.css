@@ -15,14 +15,23 @@ canvas {
   padding:10px;
   font-family: monospace;
   font-size: 16px;
-  background-color: ivory;
-  position : absolute;
-  width : 250px;
-  height : 300px;
-  border : 2px solid black;
-  top : 0;
-  left : 600;
+  position: absolute;
+  width: 250px;
+  height: 300px;
+  top: 0px;
+  left: 600px;
   display : none;
+}
+#instructionBox{
+  display: none;
+  background-color: ivory;
+  border: 2px solid black;
+}
+#conversationBox{
+  border: 2px solid black;
+}
+#headPic{
+  margin: 10px;
 }
 span{
   color: navy;
@@ -35,7 +44,7 @@ span:hover{
   padding:10px;
   font-size: 14px;
   position:absolute;
-  top:0;
+  top:0px;
   left: 849px;
   width:200px;
   border: 1px solid black;
@@ -48,9 +57,11 @@ button {
   border : 1px solid black;
   width : 35px ;
   display : none;
-  margin: 0 auto;
+  margin: 0px auto;
 }
-
+button:focus {
+  outline:0;
+}
 button:hover {
   background-color : pink;
 }
