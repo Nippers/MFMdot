@@ -5,10 +5,30 @@
 }
 
 canvas {
+  width:600px;
+  height:300px;
   border: 1px solid #000;
   position : absolute;
   top : 0;
   left : 0;
+}
+#passwordBackground{
+  position: absolute;
+  right:0px;
+  bottom:0px;
+  background-color: grey;
+  width:258px;
+  height:40px;
+  display:none;
+}
+#endBox{
+  width:600px;
+  height:300px;
+  border: 1px solid #000;
+  position : absolute;
+  top : 0;
+  left : 0;
+  display:none;
 }
 
 #instructionBox, #conversationBox {

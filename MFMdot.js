@@ -11,10 +11,10 @@ $(document).ready(function(){
       pause = false;
    });
    // Action for clicking on #conversationBoxButton
-   $('#conversationBoxButton').click(function(){
-      innerConversationCount ++;
+   /*$('#conversationBoxButton').click(function(){
+      innerConversationCount++;
       advanceConversation();
-   });
+   });*/
     // See https://stackoverflow.com/questions/10920355/attaching-click-event-to-a-jquery-object-not-yet-added-to-the-dom
     // for how to use jquery for attaching something that doesn't yet exsit on the DOM
     // Trick is to attach to document or a parent element already on the DOM
@@ -124,7 +124,7 @@ checkpoints.push({name:"lampPost", x:1200, y:90, width:60, height:190});
 var people = [];
 people.push({name:"georgiaSitting", x:-450, y:-15, width:56, height:65, num:0});
 people.push({name:"grasshopper", x:1100, y:100, width:96, height:45, num:0});
-
+people.push({name:"home", x:1800, y:30, width:250, height:250, num:0});
 //people.push({name:"hazmatGuy", x:700, y:145, width:57, height:115, num:0, frames:2, goingRight:true, imgOffsetX:0, leftX:500, rightX:900});
 
 var boxes = [];
@@ -164,7 +164,7 @@ if(georgia.caught){
 var trees = [];
 var backgroundTrees = [];
 var treeCount = 20;
-var backgroundTreeCount = 100;
+var backgroundTreeCount = 70;
 
 for (i=0; i<treeCount; i++){
   var treeHeight = Math.random()*(height*3-height*2)+height*2;
@@ -218,7 +218,7 @@ for(i=0; i<100; i++){
 
 //var instructionText = [];
 var instruction0 = "Welcome to <br><br><b>Karen and Georgia Versus the Metagame</b><br><br>By <span onclick='showFootnote(0)'>Julia Uhr<sup>1</sup></span><br><span onclick='showFootnote(1)'>Craig Schwartz<sup>2</sup></span><br>and <span onclick='showFootnote(2)'>David Ortolano<sup>3</sup></span><br><br>Inspired by<br><span onclick='showFootnote(3)'><i>My Favorite Murder</i><sup>4</sup></span>"
-var instruction1 = "Karen and Georgia,<br>You are in a game."
+var instruction1 = "Karen and Georgia,<br>You are in a game. The password is 'amoeba.'"
 
 var footnotes = [];
 footnotes.push("1<hr>Programmer, attorney, PhD candidate in philosophy at the University of Colorado<br><br>contact: julia.uhr@colorado.edu")
@@ -232,22 +232,26 @@ instructions.push( new instructions_obj(-700,30,46,53,instruction1,false,"envelo
 
 
 var conversations = [];
-var nConversations = 9; // total number of conversations
-for ( var i = 0; i < nConversations-1 ; i++){
-  conversations.push([]);
-}
 
 //conversation 0
-conversations[0].push( new conversations_obj("karen","1. Georgia! What are you doing in this tree?",false) );
-conversations[0].push( new conversations_obj("georgia","2. Karen! You found me!",false) );
-conversations[0].push( new conversations_obj("karen","3. Let's get out of here. The forest is creepy AF after dark.",false) );
-conversations[0].push( new conversations_obj("georgia","4. I can't leave without Elvis. He wandered off somewhere.",false) );
-conversations[0].push( new conversations_obj("karen","5. Fine. Let's go find Elvis.",false) );
+conversations.push([]);
+conversations[0].push( new conversations_obj("karen","0. Georgia! What are you doing in this tree?",false) );
+conversations[0].push( new conversations_obj("georgia","1. Karen! You found me!",false) );
+conversations[0].push( new conversations_obj("karen","2. Let's get out of here. The forest is creepy AF after dark.",false) );
+conversations[0].push( new conversations_obj("georgia","3. I can't leave without Elvis. He wandered off somewhere.",false) );
+conversations[0].push( new conversations_obj("karen","4. Fine. Let's go find Elvis.",false) );
 
 //conversation 1
-conversations[1].push( new conversations_obj("grasshopper","text1",false) );
-conversations[1].push( new conversations_obj("karen","text2",false) );
-conversations[1].push( new conversations_obj("grasshopper","text3",false) );
+conversations.push([]);
+conversations[1].push( new conversations_obj("grasshopper","0",false) );
+conversations[1].push( new conversations_obj("karen","1",false) );
+conversations[1].push( new conversations_obj("grasshopper","2",false) );
+
+//conversation 2
+conversations.push([]);
+conversations[2].push( new conversations_obj("elvis","Karen and Georgia both made it home safely.",false) );
+conversations[2].push( new conversations_obj("elvis","Unfortunately, Georgia stabbed Karen to death.",false) );
+conversations[2].push( new conversations_obj("elvis","It seems the whole thing was an elaborate trap.",false) );
 
 //intitalize some variables
 var originX = 0;
@@ -264,7 +268,7 @@ canvas.height = height;
 //var box_width = 25;
 //var falling_speed = 5;
 var pause = false;
-var innerConversationCount = 0; //global counter
+var innerConversationCount = -1; //global counter
 var outterConversationCount = 0; //another global counter
 
 var checkpoint = 0;
@@ -555,12 +559,20 @@ function update() {
    for (i = 0; i < people.length ; i++){
      var dir = colCheck(player, people[i]);
      if (dir === "l" || dir === "r") {
-       player.jumping = false;
+       if(i===0){
+         people[i].originY = -1000;
+         georgia.caught = true;
+         document.getElementById("passwordBackground").style.display = "inline-block";
+       }
+       //player.jumping = false;
        //conversations[i].name = "envelopeOpen";
        conversations[i][0].open = true;  // can only be true for one instruction at a time
+       if(i===people.length-1){
+         ending();
+       }
      }
       if (conversations[i][0].open ){
-         outterConversationCount = i // set global variable k for use in advanceConversation and jQuery when clicking #conversationBoxButton
+         outterConversationCount = i; // set global variable k for use in advanceConversation and jQuery when clicking #conversationBoxButton
          conversations[i][0].open = false;
   	 pause = true;
     advanceConversation()  // j = 0 initially
@@ -570,9 +582,9 @@ function update() {
 } //end update function
 
 function advanceConversation(){
-  //innerConversationCount ++;
-   var numExchanges = conversations[outterConversationCount].length;  // the number of exchanges in this conversation
 
+   var numExchanges = conversations[outterConversationCount].length;  // the number of exchanges in this conversation
+   innerConversationCount++;
    if ( innerConversationCount < numExchanges ){
       document.getElementById("conversationBox").style.display = 'block';
       document.getElementById("conversationBoxButton").style.display = 'block';
@@ -586,7 +598,7 @@ function advanceConversation(){
    } else {
       document.getElementById("conversationBox").style.display = 'none'; // $('#conversationBox').hide();
       document.getElementById("footnoteBox").style.display = 'none';
-      innerConversationCount = 0;
+      innerConversationCount = -1;
       pause = false;
       /*if(k===0){
         people[k].width = 0;
@@ -689,6 +701,10 @@ function showFootnote(num){
   //}
 }
 
+function ending(){
+  pause = true;
+  document.getElementById("endBox").style.display="block";
+}
 
 document.body.addEventListener("keydown", function(e) {
   keys[e.keyCode] = true;
@@ -699,5 +715,5 @@ document.body.addEventListener("keyup", function(e) {
 });
 
 window.addEventListener("load", function() {
-  setInterval(update, 16);
+  setInterval(update, 10);
 });

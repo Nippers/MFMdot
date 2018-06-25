@@ -1,11 +1,14 @@
 <html>
-<head></head>
+<head>
+  <link rel="stylesheet" type="text/css" href="MFMdot.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="MFMdot.js"></script>
+</head>
 <body>
 <canvas id="canvas"></canvas>
-<link rel="stylesheet" type="text/css" href="MFMdot.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="MFMdot.js"></script>
-
+<div id="endBox">
+  <img src="ending1.png" height="298px" width="598px">
+</div>
 <!-- div for instructions. these only have one window/frame of text and so only need one button -->
 <div id="instructionBox">
   <div id=instructionBoxText></div>
@@ -18,11 +21,12 @@
   <div id="headPic"></div>  <!-- div for heads for conversations -->
   <div id="conversationBoxText"></div>
   <br><br>
-  <button id="conversationBoxButton"> . . . </button>
+  <button id="conversationBoxButton" onclick="advanceConversation()"> . . . </button>
 </div>
 <div id="footnoteBox">
   1<hr>Footnote text goes in here when you click on a highlighted piece of main text. Click again to get rid of the note.
 </div>
+<div id="passwordBackground"></div>
 
 <img src="treeTrunk7.png" id="treeTrunk" style="display:none">
 <img src="treeTrunk6.png" id="treeTrunk2" style="display:none">
@@ -44,6 +48,7 @@
 <img src="envelopeOpen.png" id="envelopeOpen" style="display:none">
 <img src="fluff.png" id="fluff" style="display:none">
 <img src="lampPost.png" id="lampPost" style="display:none">
+<img src="home.png" id="home" style="display:none">
 
 </body>
 </html>
