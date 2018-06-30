@@ -15,7 +15,7 @@ canvas {
 #passwordBackground{
   position: absolute;
   right:0px;
-  bottom:0px;
+  bottom:1px;
   background-color: grey;
   width:258px;
   height:40px;

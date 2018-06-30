@@ -217,7 +217,6 @@ for(i=0; i<100; i++){
 //var instructionText = [];
 var instruction0 = "Welcome to <br><br><b>Karen and Georgia Versus the Metagame</b><br><br>By <span onclick='showFootnote(0)'>Julia Uhr<sup>1</sup></span><br><span onclick='showFootnote(1)'>Craig Schwartz<sup>2</sup></span><br>and <span onclick='showFootnote(2)'>David Ortolano<sup>3</sup></span><br><br>Inspired by<br><span onclick='showFootnote(3)'><i>My Favorite Murder</i><sup>4</sup></span>"
 var instruction1 = "He is the<br>enemy of Athens who<br>mocks the gods, says he<br>lacks wisdom, and<br>only asks questions,<br>corrupting the youth.<br>Kill him with this."
-//He is the<br>enemy of Athens who<br>Mocks the gods, claims to<br>lack wisdom, and<br>only asks, never answers, questions to<br>corrupt the youth. How do you<br>kill him?
 
 var footnotes = [];
 footnotes.push("1<hr>Programmer, attorney, PhD candidate in philosophy at the University of Colorado<br><br>contact: julia.uhr@colorado.edu")
@@ -320,7 +319,9 @@ for(i=0; i<movingObjects.length; i++){
 for(i=0; i<backgroundTrees.length; i++){
   backgroundTrees[i].originX = backgroundTrees[i].x;
 }
-
+var song = new Audio('guitarMFM.wav');
+song.loop=true;
+song.play();
 //begin update function
 function update() {
   frameCount++;

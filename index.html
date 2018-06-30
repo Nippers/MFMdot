@@ -32,6 +32,7 @@
 <button onclick="showCode()" id="passwordSubmitButton">OK</button>
 <div id="codeCover"></div>
 
+
 <style>
   #codeCover{
     /*display:none;*/
@@ -47,8 +48,8 @@
   #passwordBox{
     color: white;
     position:relative;
-    top:-335;
-    left:900;
+    top:-337;
+    left:880;
     width:150px;
     height:30px;
     border: 1px solid white;
@@ -60,8 +61,8 @@
   #passwordSubmitButton{
     color: white;
     position:relative;
-    top:-345;
-    left:900;
+    top:-347;
+    left:880;
     width:50px;
     height:30px;
     border: 1px solid white;
@@ -72,14 +73,16 @@
   }
   button:focus {outline:0;}
   textarea:focus {outline:0;}
-
 </style>
 
 <script>
+
+
   function showCode(){
     var password = document.getElementById('passwordBox').value;
     if(password.toLowerCase()==="hemlock"){
       document.getElementById('codeCover').style.display = 'none';
+      document.getElementById('passwordBox').value = '';
     }
   }
 </script>
